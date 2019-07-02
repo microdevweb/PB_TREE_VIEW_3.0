@@ -152,6 +152,10 @@ Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
     \_titleBoxPos\y = yc - (ht / 2)
     \_titleBoxPos\w = VectorTextWidth(\title)
     \_titleBoxPos\h = ht
+    ; we set the max width of tree
+    If *tree\maxWidth < \_titleBoxPos\x + \_titleBoxPos\w
+      *tree\maxWidth = \_titleBoxPos\x + \_titleBoxPos\w
+    EndIf
     ; x line position
       If Not lx
         lx = xx 
@@ -433,7 +437,7 @@ DataSection
   E_ITEM:
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 223
-; FirstLine = 12
-; Folding = AAgq8J4-HOO0
+; CursorPosition = 157
+; FirstLine = 72
+; Folding = AAgr8Tu-Pcc7
 ; EnableXP

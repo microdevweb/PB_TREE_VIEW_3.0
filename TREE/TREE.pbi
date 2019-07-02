@@ -45,10 +45,14 @@ DeclareModule TREE
     getImageWidht()
     getImageHeight()
     getlineHeight()
+    getButtonWidth()
+    getButtonHeight()
     ; SETTERS
     setImageWidht(width)
     setImageHeight(height)
     setlineHeight(height)
+    setButtonWidth(width)
+    setButtonHeight(height)
     ; PUBLIC METHODS
     addChild(item)
     build()
@@ -2277,7 +2281,7 @@ Module TREE
   
 EndModule
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 72
-; FirstLine = 60
+; CursorPosition = 48
+; FirstLine = 30
 ; Folding = -
 ; EnableXP

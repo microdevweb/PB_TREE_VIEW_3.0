@@ -6,6 +6,7 @@
 ; LICENCE     : CC-BY-NC-SA
 ; **********************************************************************************************************************
 ;-* PRIVATE METHODS
+Declare _TREE_drawMask(*this._TREE)
 Procedure _TREE_buildChildren(*this._TREE)
   With *this
     Protected y = 10
@@ -18,6 +19,7 @@ Procedure _TREE_buildChildren(*this._TREE)
       y = \myChildren()\build(\myChildren(),*this,10,y)
     Next
     StopVectorDrawing()
+    \maxHeight = y
   EndWith
 EndProcedure
 
@@ -42,6 +44,15 @@ Procedure _TREE_EVENT()
     EndIf
   EndWith
 EndProcedure
+
+Procedure _TREE_evContainer()
+  Protected *this._TREE = GetGadgetData(EventGadget())
+  With *this
+    ResizeGadget(\scroll_id,#PB_Ignore,#PB_Ignore,GadgetWidth(\container_id),GadgetHeight(\container_id))
+    ResizeGadget(\canvas_id,#PB_Ignore,#PB_Ignore,GadgetWidth(\container_id),GadgetHeight(\container_id))
+    _TREE_drawMask(*this)
+  EndWith
+EndProcedure
 ;}
 ;-* PROTECTED METHODS
 Procedure _TREE_unselectItems(*this._TREE)
@@ -57,6 +68,16 @@ Procedure _TREE_drawMask(*this._TREE)
     StartDrawing(CanvasOutput(\canvas_id))
     DrawImage(ImageID(\maskImage),0,0)
     StopDrawing()
+    If \maxWidth > GadgetWidth(\scroll_id) - 10
+      SetGadgetAttribute(\scroll_id,#PB_ScrollArea_InnerWidth,\maxWidth)
+    Else
+      SetGadgetAttribute(\scroll_id,#PB_ScrollArea_InnerWidth,GadgetWidth(\scroll_id) - 10)
+    EndIf
+    If \maxHeight > GadgetHeight(\scroll_id) - 10
+      SetGadgetAttribute(\scroll_id,#PB_ScrollArea_InnerHeight,\maxHeight)
+    Else
+      SetGadgetAttribute(\scroll_id,#PB_ScrollArea_InnerHeight,GadgetHeight(\scroll_id) - 10)
+    EndIf
   EndWith
 EndProcedure
 ;}
@@ -78,8 +99,20 @@ Procedure TREE_getlineHeight(*this._TREE)
     ProcedureReturn \lineHeight
   EndWith
 EndProcedure
+
+Procedure TREE_getButtonWidth(*this._TREE)
+  With *this
+     ProcedureReturn \buttonWidth
+  EndWith
+EndProcedure
+
+Procedure TREE_getButtonHeight(*this._TREE)
+  With *this
+     ProcedureReturn \buttonHeight 
+  EndWith
+EndProcedure
 ;}
-;-* GETTERS
+;-* SETTERS
 Procedure TREE_setImageWidht(*this._TREE,widht)
   With *this
      \imageWidh = widht
@@ -98,6 +131,17 @@ Procedure TREE_setlineHeight(*this._TREE,height)
   EndWith
 EndProcedure
 
+Procedure TREE_setButtonWidth(*this._TREE,widht)
+  With *this
+     \buttonWidth = widht
+  EndWith
+EndProcedure
+
+Procedure TREE_setButtonHeight(*this._TREE,height)
+  With *this
+     \buttonHeight = height
+  EndWith
+EndProcedure
 ;}
 ;-* PUBLIC METHODS
 Procedure TREE_addChild(*this._TREE,*item)
@@ -121,6 +165,8 @@ Procedure TREE_build(*this._TREE)
         BindGadgetEvent(\canvas_id,@_TREE_EVENT())
       EndIf
       CloseGadgetList()
+      SetGadgetData(\container_id,*this)
+      BindGadgetEvent(\container_id,@_TREE_evContainer())
     EndIf
     ; we create the mask image
     If Not IsImage(\maskImage) Or \maskImage = 0
@@ -182,10 +228,14 @@ DataSection
   Data.i @TREE_getImageWidht()
   Data.i @TREE_getImageHeight()
   Data.i @TREE_getlineHeight()
+  Data.i @TREE_getButtonWidth()
+  Data.i @TREE_getButtonHeight()
   ; SETTERS
   Data.i @TREE_setImageWidht()
   Data.i @TREE_setImageHeight()
   Data.i @TREE_setlineHeight()
+  Data.i @TREE_setButtonWidth()
+  Data.i @TREE_setButtonHeight()
   ; PUBLIC METHODS
   Data.i @TREE_addChild()
   Data.i @TREE_build()
@@ -198,7 +248,6 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 112
-; FirstLine = 54
-; Folding = DNje9
+; CursorPosition = 8
+; Folding = D8B505
 ; EnableXP

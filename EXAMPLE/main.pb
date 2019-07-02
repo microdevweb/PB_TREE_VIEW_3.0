@@ -67,14 +67,18 @@ Procedure fillItemCar(item.TREE::Item)
     EndIf
   Until d = "-1"
 EndProcedure
+
+Procedure ev_size()
+  ResizeGadget(#CONTAINER_TREE,#PB_Ignore,#PB_Ignore,#PB_Ignore,WindowHeight(#MAIN_FORM))
+EndProcedure
 ; open a window
-OpenWindow(#MAIN_FORM,0,0,800,600,"Teste",#PB_Window_ScreenCentered|#PB_Window_SystemMenu)
+OpenWindow(#MAIN_FORM,0,0,800,600,"Teste",#PB_Window_ScreenCentered|#PB_Window_SystemMenu|#PB_Window_SizeGadget)
 ContainerGadget(#CONTAINER_TREE,0,0,800,600,#PB_Container_Double)
 CloseGadgetList()
 ContainerGadget(#CONTAINER_WORK,0,0,800,600,#PB_Container_Double)
 CloseGadgetList()
 SplitterGadget(#SLITER,0,0,800,600,#CONTAINER_TREE,#CONTAINER_WORK,#PB_Splitter_Vertical|#PB_Splitter_Separator)
-
+BindEvent(#PB_Event_SizeWindow,@ev_size(),#MAIN_FORM)
 ; create tree view
 
 Global.TREE::Item iBank,iExpens
@@ -145,7 +149,7 @@ DataSection
   IncludeBinary "IMG/car.ico"
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 58
-; FirstLine = 54
-; Folding = --
+; CursorPosition = 71
+; FirstLine = 51
+; Folding = ---
 ; EnableXP

@@ -38,6 +38,10 @@ Procedure _BUTTON_build(*this._BUTTON,*item._ITEM,*tree._TREE,x,y)
     \_buttonBox\y = yy
     \_buttonBox\w = *tree\buttonWidth
     \_buttonBox\h = *tree\buttonHeight
+    ; we set the max width of tree
+    If *tree\maxWidth < \_buttonBox\x + \_buttonBox\w
+      *tree\maxWidth = \_buttonBox\x + \_buttonBox\w
+    EndIf
   EndWith
 EndProcedure
 
@@ -142,7 +146,7 @@ DataSection
   E_BUTTON:
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 46
-; FirstLine = 30
-; Folding = vfO+
+; CursorPosition = 42
+; FirstLine = 21
+; Folding = --c9
 ; EnableXP

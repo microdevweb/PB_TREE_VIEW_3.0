@@ -63,8 +63,6 @@ Structure _TREE
   Map *_children._ITEM()
   children_tabulation.l
   font.l
-  currentY.l
-  currentX.l
   maxWidth.l
   maxHeight.l
   imageWidh.l
@@ -79,7 +77,7 @@ Structure _TREE
   drawMask._p_drawMask
 EndStructure
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 78
-; FirstLine = 45
+; CursorPosition = 64
+; FirstLine = 40
 ; Folding = -
 ; EnableXP
