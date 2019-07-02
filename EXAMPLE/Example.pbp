@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 5.71 beta 2 LTS (Windows - x64)">
+  <section name="config">
+    <options closefiles="1" openmode="0" name="Nouveau projet"/>
+  </section>
+  <section name="data">
+    <explorer view="PACKAGES\" pattern="0"/>
+    <log show="1"/>
+    <lastopen date="2019-07-02 07:50" user="microdev" host="DESKTOP-9Q9MHN0"/>
+  </section>
+  <section name="files">
+    <file name="main.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="d049eae6c21b1423119003ca25a3251a"/>
+    </file>
+    <file name="PACKAGES\DB\DB.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+++"/>
+      <fingerprint md5="ca07f0d77d7931271aae2cddf9aa7830"/>
+    </file>
+    <file name="PACKAGES\DB\CLASSES\Sqlite.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++++"/>
+      <fingerprint md5="095e94436e51ea29c0c4dd43a647523c"/>
+    </file>
+    <file name="PACKAGES\ENGINE\CLASSES\Bank.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++++"/>
+      <fingerprint md5="2ff393d819e1b24d5ad158257437b16d"/>
+    </file>
+    <file name="PACKAGES\ENGINE\ENGINE.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+++"/>
+      <fingerprint md5="b059d8494d781b2e5e6f64ba162d7709"/>
+    </file>
+  </section>
+  <section name="targets">
+    <target name="Cible par défaut" enabled="1" default="1">
+      <inputfile value=""/>
+      <outputfile value=""/>
+      <options xpskin="1" debug="1"/>
+    </target>
+  </section>
+</project>

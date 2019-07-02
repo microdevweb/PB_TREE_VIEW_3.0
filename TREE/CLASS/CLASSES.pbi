@@ -9,11 +9,28 @@ Prototype _p_build_item(*this,*tree,x,y,*parent = 0)
 Prototype _p_mamage_event(*this,*tree,mx,my)
 Prototype _p_unselect(*this)
 Prototype _p_selectCallback(*this)
+Prototype _p_build_button(*this,*item,*tree,x,y)
+Prototype _p_drawMask(*this)
 Structure _POS
   x.l
   y.l
   w.l
   h.l
+EndStructure
+Structure _COLORS
+  back.l
+  front.l
+EndStructure
+Structure _BUTTON
+  *methods
+  image.l
+  toolTip.s
+  _buttonBox._POS
+  *callBack._p_unselect
+  disabled.b
+  build._p_build_button
+  namageEvent._p_mamage_event
+  *item
 EndStructure
 Structure _ITEM
   *methods
@@ -34,6 +51,7 @@ Structure _ITEM
   _imageBoxPos._POS
   _titleBoxPos._POS
   selectCallback._p_selectCallback
+  List *myButtons._BUTTON()
 EndStructure
 Structure _TREE
   *methods
@@ -53,9 +71,15 @@ Structure _TREE
   imageHeight.l
   lineHeight.l
   selectCallback._p_selectCallback
+  buttonWidth.l
+  buttonHeight.l
+  toolTipColors._COLORS
+  toolTipFont.l
+  maskImage.l
+  drawMask._p_drawMask
 EndStructure
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 54
-; FirstLine = 31
+; CursorPosition = 78
+; FirstLine = 45
 ; Folding = -
 ; EnableXP

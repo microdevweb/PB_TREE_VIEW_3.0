@@ -9,7 +9,7 @@
 Procedure _TREE_buildChildren(*this._TREE)
   With *this
     Protected y = 10
-    StartVectorDrawing(CanvasVectorOutput(\canvas_id))
+    StartVectorDrawing(ImageVectorOutput(\maskImage))
     VectorSourceColor($FFFFFFFF)
     FillVectorOutput()
     VectorSourceColor($FF000000)
@@ -49,6 +49,14 @@ Procedure _TREE_unselectItems(*this._TREE)
     ForEach \myChildren()
       \myChildren()\unselectItems(\myChildren())
     Next
+  EndWith
+EndProcedure
+
+Procedure _TREE_drawMask(*this._TREE)
+  With *this
+    StartDrawing(CanvasOutput(\canvas_id))
+    DrawImage(ImageID(\maskImage),0,0)
+    StopDrawing()
   EndWith
 EndProcedure
 ;}
@@ -114,10 +122,14 @@ Procedure TREE_build(*this._TREE)
       EndIf
       CloseGadgetList()
     EndIf
+    ; we create the mask image
+    If Not IsImage(\maskImage) Or \maskImage = 0
+      \maskImage = CreateImage(#PB_Any,GadgetWidth(\container_id),GadgetHeight(\container_id))
+    EndIf
     ClearMap(\_children())
     _TREE_buildChildren(*this)
     CloseGadgetList()
-    
+    _TREE_drawMask(*this)
   EndWith
 EndProcedure
 
@@ -149,11 +161,17 @@ Procedure newTreeView(containerId)
     \methods = ?S_TREE
     \unselectItems = @_TREE_unselectItems()
     \container_id = containerId
-    \children_tabulation = 20
+    \children_tabulation = 4
     \font = LoadFont(#PB_Any,"Arial",10,#PB_Font_HighQuality)
     \imageWidh = 24
     \imageHeight = 24
     \lineHeight = 26
+    \buttonWidth = 16
+    \buttonHeight = 16
+    \toolTipColors\back = $FF212121
+    \toolTipColors\front = $FFFFFFFF
+    \toolTipFont = LoadFont(#PB_Any,"Arial",10,#PB_Font_HighQuality)
+    \drawMask = @_TREE_drawMask()
     ProcedureReturn *this
   EndWith
 EndProcedure
@@ -180,7 +198,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 17
-; FirstLine = 5
-; Folding = DkRB+
+; CursorPosition = 112
+; FirstLine = 54
+; Folding = DNje9
 ; EnableXP

@@ -162,6 +162,12 @@ Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
     ; we memorize the y position into the map for will find to easy the item
     AddMapElement(*tree\_children(),Str(yy)+"_"+Str(yy + *tree\lineHeight))
     *tree\_children() = *this
+    ; draw the buttons
+    Protected xbt = xx + 4
+    ForEach \myButtons()
+      \myButtons()\build(\myButtons(),*this,*tree,xbt,yy)
+      xbt + *tree\buttonWidth + 4
+    Next
     ; jump next row
     yy + *tree\lineHeight
     ; we throw look into the children list only if expanded
@@ -189,6 +195,7 @@ EndProcedure
 
 Procedure _ITEM_event(*this._ITEM,*tree._TREE,mx,my)
   With *this
+    Protected hoverButton.b = #False
     Select EventType()
       Case #PB_EventType_MouseMove
         SetGadgetAttribute(*tree\canvas_id,#PB_Canvas_Cursor,#PB_Cursor_Default)
@@ -205,6 +212,16 @@ Procedure _ITEM_event(*this._ITEM,*tree._TREE,mx,my)
           If _ITEM_hoverTitleBox(*this,mx,my)
             SetGadgetAttribute(*tree\canvas_id,#PB_Canvas_Cursor,#PB_Cursor_Hand)
           EndIf
+        EndIf
+        ForEach \myButtons()
+          If \myButtons()\namageEvent(\myButtons(),*tree,mx,my) 
+            hoverButton = #True
+            Break 
+          EndIf
+        Next
+        If Not hoverButton And gToolOn
+          *tree\drawMask(*tree)
+          gToolOn = #False
         EndIf
       Case #PB_EventType_LeftClick
         If _ITEM_hoverExpand(*this,mx,my)
@@ -239,6 +256,9 @@ Procedure _ITEM_event(*this._ITEM,*tree._TREE,mx,my)
             ProcedureReturn #True ; the tree is need to refresh
           EndIf
         EndIf
+        ForEach \myButtons()
+          If \myButtons()\namageEvent(\myButtons(),*tree,mx,my) : Break : EndIf
+        Next
     EndSelect
     ProcedureReturn #False ; the tree isn't need to refresh
   EndWith
@@ -299,6 +319,14 @@ Procedure ITEM_setSelectedCallback(*this._ITEM,*callback)
     \selectCallback = *callback
   EndWith
 EndProcedure
+
+Procedure ITEM_addButton(*this._ITEM,*button)
+  With *this
+    AddElement(\myButtons())
+    \myButtons() = *button
+    ProcedureReturn *button
+  EndWith
+EndProcedure
 ;}
 
 ;-* GETTERS
@@ -323,6 +351,12 @@ EndProcedure
 Procedure ITEM_isExpanded(*this._ITEM) 
   With *this
     ProcedureReturn \expanded
+  EndWith
+EndProcedure
+
+Procedure ITEM_isSelectable(*this._ITEM) 
+  With *this
+    ProcedureReturn \selectable
   EndWith
 EndProcedure
 
@@ -353,6 +387,11 @@ Procedure ITEM_setExpanded(*this._ITEM,state.b)
   EndWith
 EndProcedure
 
+Procedure ITEM_setSelectable(*this._ITEM,state.b) 
+  With *this
+     \selectable = state
+  EndWith
+EndProcedure
 ;}
 
 Procedure newItem(title.s,image = 0)
@@ -376,11 +415,13 @@ DataSection
   Data.i @ITEM_getImage()
   Data.i @ITEM_hasCheckBox()
   Data.i @ITEM_isExpanded()
+  Data.i @ITEM_isSelectable()
   ; SETTERS
   Data.i @ITEM_SetTitle()
   Data.i @ITEM_setImage()
   Data.i @ITEM_setCheckBox()
   Data.i @ITEM_setExpanded()
+  Data.i @ITEM_setSelectable()
   ; PUBLIC METHODS
   Data.i @ITEM_addChild()
   Data.i @ITEM_free()
@@ -388,10 +429,11 @@ DataSection
   Data.i @ITEM_setData()
   Data.i @ITEM_getData()
   Data.i @ITEM_setSelectedCallback()
+  Data.i @ITEM_addButton()
   E_ITEM:
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 174
-; FirstLine = 94
-; Folding = AAgr8B0-QQ7
+; CursorPosition = 223
+; FirstLine = 12
+; Folding = AAgq8J4-HOO0
 ; EnableXP
