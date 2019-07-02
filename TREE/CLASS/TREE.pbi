@@ -199,6 +199,21 @@ Procedure TREE_setSelectedCallback(*this._TREE,*callback)
     \selectCallback = *callback
   EndWith
 EndProcedure
+
+Procedure TREE_removeItem(*this._TREE,*item)
+  With *this
+    ForEach \myChildren()
+      If \myChildren()\removeItem(\myChildren(),*item)
+        If \myChildren() = *item
+          DeleteElement(\myChildren())
+        EndIf
+        ProcedureReturn #True
+      EndIf
+    Next
+    ProcedureReturn #False
+  EndWith
+EndProcedure
+
 ;}
 
 Procedure newTreeView(containerId)
@@ -242,12 +257,14 @@ DataSection
   Data.i @TREE_free()
   Data.i @TREE_freeChildren()
   Data.i @TREE_setSelectedCallback()
+  Data.i @TREE_removeItem()
   E_TREE:
 EndDataSection
 
 
 
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 8
-; Folding = D8B505
+; CursorPosition = 209
+; FirstLine = 19
+; Folding = AAAAB9+
 ; EnableXP

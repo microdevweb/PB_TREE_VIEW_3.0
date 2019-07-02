@@ -276,6 +276,23 @@ Procedure _ITEM_unselect(*this._ITEM)
     Next
   EndWith
 EndProcedure
+
+Procedure _ITEM_remove(*this._ITEM,*toRemove)
+  With *this
+    If *this = *toRemove
+      Define i.TREE::Item  = *this
+      i\free()
+      ProcedureReturn #True
+    EndIf
+    ForEach \myChildren()
+      If \myChildren()\removeItem(\myChildren(),*toRemove)
+        DeleteElement(\myChildren())
+        ProcedureReturn #True
+      EndIf
+    Next
+    ProcedureReturn #False
+  EndWith
+EndProcedure
 ;}
 
 ;-* PUBLIC METHODS
@@ -408,6 +425,7 @@ Procedure newItem(title.s,image = 0)
     \manageEvents = @_ITEM_event()
     \unselectItems = @_ITEM_unselect()
     \selectable = #True
+    \removeItem = @_ITEM_remove()
     ProcedureReturn *this
   EndWith
 EndProcedure
@@ -437,7 +455,7 @@ DataSection
   E_ITEM:
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 157
-; FirstLine = 72
-; Folding = AAgr8Tu-Pcc7
+; CursorPosition = 282
+; FirstLine = 15
+; Folding = AAgq8Ru-0xjT-
 ; EnableXP

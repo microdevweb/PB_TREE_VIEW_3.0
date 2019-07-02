@@ -49,8 +49,12 @@ Procedure evEditBank(item.TREE::Item)
 EndProcedure
 Procedure evDeleteBank(item.TREE::Item)
   With item
+;     CallDebugger
     If ChangeCurrentElement(myBank(),item\getData())
-      Debug "Delete bank : "+myBank()\name
+      If myTree\removeItem(item)
+        myTree\build()
+        Debug "Delete bank : "+myBank()\name
+      EndIf
     EndIf
   EndWith
 EndProcedure
@@ -149,7 +153,7 @@ DataSection
   IncludeBinary "IMG/car.ico"
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 71
-; FirstLine = 51
+; CursorPosition = 51
+; FirstLine = 39
 ; Folding = ---
 ; EnableXP

@@ -59,6 +59,7 @@ DeclareModule TREE
     free()
     freeChildren()
     setSelectedCallback(callback)
+    removeItem(item)
   EndInterface
   
   Declare newTreeView(containerId)
@@ -2281,7 +2282,7 @@ Module TREE
   
 EndModule
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 48
+; CursorPosition = 61
 ; FirstLine = 30
 ; Folding = -
 ; EnableXP
