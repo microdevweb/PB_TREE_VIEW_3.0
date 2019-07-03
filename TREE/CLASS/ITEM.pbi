@@ -65,11 +65,9 @@ EndProcedure
 ;}
 
 ;-* PROTECTED METHODS
-Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
+Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,noLine.b = #False)
   With *this
     Protected xx = x,yy = y,yc = Y + *tree\lineHeight / 2
-    Protected nx = x
-    Protected lx,ly1,ly2,drawLine.b,lyy
     \_checkBoxPos\w = 0
     \_epandBoxPos\w = 0
     \_imageBoxPos\w = 0
@@ -79,43 +77,33 @@ Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
     If ListSize(\myChildren())
       MovePathCursor(xx,yc - 8)
       If  \expanded
-        DrawVectorImage(ImageID(ico_collabsed),255,16,16)
+        DrawVectorImage(ImageID(*tree\expandIconExpanded),255,16,16)
       Else
-        DrawVectorImage(ImageID(ico_expanded),255,16,16)
+        DrawVectorImage(ImageID(*tree\expangIconCollapsed),255,16,16)
       EndIf
       ; we memorise the position for events management
       \_epandBoxPos\x = xx
       \_epandBoxPos\y = yc - 8
       \_epandBoxPos\w = 16
       \_epandBoxPos\h = 16
-      ; x line position
-      lx = xx + 8
-      ly1 = \_epandBoxPos\y + \_epandBoxPos\h
       ; x position for next element
       xx + 18
-      nx + 16
     EndIf
     ; we draw the checkbox
     If \checkBox
       MovePathCursor(xx,yc - 8)
       If \checked
-        DrawVectorImage(ImageID(ico_ckecked),255,16,16)
+        DrawVectorImage(ImageID(*tree\checked),255,16,16)
       Else
-        DrawVectorImage(ImageID(ico_unckecked),255,16,16)
+        DrawVectorImage(ImageID(*tree\unChecked),255,16,16)
       EndIf
       ; we memorise the position for events management
       \_checkBoxPos\x = xx
       \_checkBoxPos\y = yc - 8
       \_checkBoxPos\w = 16
       \_checkBoxPos\h = 16
-      ; x line position
-      If Not lx
-        lx = xx + 8
-        ly1 = \_checkBoxPos\y + \_checkBoxPos\h
-      EndIf
       ; x position for next element
       xx + 18
-      nx + 16
     EndIf
     ; we draw the image if not null
     If \image
@@ -126,24 +114,18 @@ Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
       \_imageBoxPos\y = yc - (*tree\imageHeight / 2)
       \_imageBoxPos\w = *tree\imageWidh
       \_imageBoxPos\h = *tree\imageHeight
-      ; x line position
-      If Not lx
-        lx = xx + (*tree\imageWidh / 2)
-        ly1 = \_imageBoxPos\y + \_imageBoxPos\h
-      EndIf
       ; x position for next element
       xx + *tree\imageWidh + 5
-      nx + *tree\imageWidh
     EndIf
     ; we draw the title
     Protected ht = VectorTextHeight("W")
     If \selectable And \selected
-      VectorSourceColor($FFCD0000)
+      VectorSourceColor(*tree\selectedColors\back)
       AddPathBox(xx,yc - (ht / 2),VectorTextWidth(\title),ht)
       FillPath()
-      VectorSourceColor($FFFFFFFF)
+      VectorSourceColor(*tree\selectedColors\front)
     Else
-      VectorSourceColor($FF000000)
+      VectorSourceColor(*tree\myColor\front)
     EndIf
     MovePathCursor(xx,yc - (ht / 2))
     DrawVectorText(*this\title)
@@ -156,11 +138,6 @@ Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
     If *tree\maxWidth < \_titleBoxPos\x + \_titleBoxPos\w
       *tree\maxWidth = \_titleBoxPos\x + \_titleBoxPos\w
     EndIf
-    ; x line position
-      If Not lx
-        lx = xx 
-        ly1 = \_titleBoxPos\y + \_titleBoxPos\h
-      EndIf
     ; x position for next element
     xx + VectorTextWidth(\title)
     ; we memorize the y position into the map for will find to easy the item
@@ -172,26 +149,32 @@ Procedure _ITEM_build(*this._ITEM,*tree._TREE,x,y,*parent_item = 0)
       \myButtons()\build(\myButtons(),*this,*tree,xbt,yy)
       xbt + *tree\buttonWidth + 4
     Next
+    ; draw vertical line
+    Protected ly = yy + (*tree\lineHeight / 2),lx1 = (x - *tree\children_tabulation) + 8,lx2 = x 
+    If Not noLine
+      MovePathCursor(lx1,ly)
+      AddPathLine(lx2,ly)
+      VectorSourceColor(*tree\lineColor)
+      DotPath(0.5,2)
+    EndIf
     ; jump next row
     yy + *tree\lineHeight
     ; we throw look into the children list only if expanded
+    Protected lxv = x + 8,lyv1 = yy,lyv2,lineOn.b = #False
     If \expanded
       ForEach \myChildren()
-        yy = \myChildren()\build(\myChildren(),*tree,nx + *tree\children_tabulation,yy,*this)
-        VectorSourceColor($FF000000)
-        lyy = yy - (*tree\lineHeight / 2)
-        MovePathCursor(lx,lyy )
-        AddPathLine(nx + *tree\children_tabulation,lyy )
-        DotPath(1,6)
-        drawLine = #True
+        lineOn = #True
+        yy = \myChildren()\build(\myChildren(),*tree,x + *tree\children_tabulation,yy,#False)
+        lyv2 = yy 
       Next
     EndIf
-    ly2 = yy
-    If drawLine
-      VectorSourceColor($FF000000)
-      MovePathCursor(lx,ly1)
-      AddPathLine(lx,ly2)
-      DotPath(1,6)
+    ; draw vertical line
+    If lineOn And Not noLine
+      lyv2 - (*tree\lineHeight / 2)
+      MovePathCursor(lxv,lyv1)
+      AddPathLine(lxv,lyv2)
+      VectorSourceColor(*tree\lineColor)
+      DotPath(0.5,2)
     EndIf
     ProcedureReturn yy
   EndWith
@@ -229,17 +212,17 @@ Procedure _ITEM_event(*this._ITEM,*tree._TREE,mx,my)
         EndIf
       Case #PB_EventType_LeftClick
         If _ITEM_hoverExpand(*this,mx,my)
-          \expanded = ~ \expanded
+          \expanded =  \expanded ! 1
           ProcedureReturn #True ; the tree is need to refresh
         EndIf
         If _ITEM_hoverCheckedBox(*this,mx,my)
-          \checked = ~ \checked
+          \checked = \checked ! 1
           ProcedureReturn #True ; the tree is need to refresh
         EndIf
         If \selectable
           If _ITEM_hoverImageBox(*this,mx,my)
             *tree\unselectItems(*tree)
-            \selected = ~ \selected
+            \selected =  \selected ! 1
             If \selectCallback
               \selectCallback(*this)
             EndIf
@@ -455,7 +438,7 @@ DataSection
   E_ITEM:
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 282
-; FirstLine = 15
-; Folding = AAgq8Ru-0xjT-
+; CursorPosition = 214
+; FirstLine = 147
+; Folding = AAg--l-ff951-
 ; EnableXP

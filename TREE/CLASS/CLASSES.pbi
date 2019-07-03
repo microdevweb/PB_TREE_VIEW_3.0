@@ -5,7 +5,7 @@
 ; DATE        : 2019-06-29
 ; LICENCE     : CC-BY-NC-SA
 ; **********************************************************************************************************************
-Prototype _p_build_item(*this,*tree,x,y,*parent = 0)
+Prototype _p_build_item(*this,*tree,x,y,noLine.b = #False)
 Prototype _p_mamage_event(*this,*tree,mx,my)
 Prototype _p_unselect(*this)
 Prototype _p_selectCallback(*this)
@@ -62,7 +62,7 @@ Structure _TREE
   scroll_id.l    ; the scroll area is create by the class
   canvas_id.l
   List *myChildren._ITEM()
-  Map *_children._ITEM()
+  Map *_children()
   children_tabulation.l
   font.l
   maxWidth.l
@@ -75,11 +75,18 @@ Structure _TREE
   buttonHeight.l
   toolTipColors._COLORS
   toolTipFont.l
+  myColor._COLORS
+  lineColor.l
   maskImage.l
   drawMask._p_drawMask
+  selectedColors._COLORS
+  expandIconExpanded.l
+  expangIconCollapsed.l
+  checked.l
+  unChecked.l
 EndStructure
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 13
-; FirstLine = 10
+; CursorPosition = 64
+; FirstLine = 46
 ; Folding = -
 ; EnableXP
