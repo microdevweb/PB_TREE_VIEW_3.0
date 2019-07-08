@@ -30,6 +30,7 @@ Procedure _TREE_buildChildren(*this._TREE)
       DotPath(0.5,2)
     EndIf
     \maxHeight = y
+    StopVectorDrawing()
   EndWith
 EndProcedure
 
@@ -64,13 +65,17 @@ Procedure _TREE_evContainer()
   Protected *this._TREE = GetGadgetData(EventGadget()),redraw.b = #False
   With *this
     ResizeGadget(\scroll_id,#PB_Ignore,#PB_Ignore,GadgetWidth(\container_id),GadgetHeight(\container_id))
-    If GadgetWidth(\canvas_id) < GadgetWidth(\scroll_id)
-      ResizeGadget(\canvas_id,#PB_Ignore,#PB_Ignore,GadgetWidth(\scroll_id),#PB_Ignore)
+    If GadgetWidth(\canvas_id) < GadgetWidth(\container_id)
+      ResizeGadget(\canvas_id,#PB_Ignore,#PB_Ignore,GadgetWidth(\container_id),#PB_Ignore)
+      redraw = #True
     EndIf
-    If GadgetHeight(\canvas_id) < GadgetHeight(\scroll_id)
-      ResizeGadget(\canvas_id,#PB_Ignore,#PB_Ignore,#PB_Ignore,GadgetHeight(\scroll_id))
+    If GadgetHeight(\canvas_id) < GadgetHeight(\container_id)
+      ResizeGadget(\canvas_id,#PB_Ignore,#PB_Ignore,#PB_Ignore,GadgetHeight(\container_id))
+      redraw = #True
     EndIf
+;     Debug "CONT : "+Str(GadgetWidth(\container_id))+" CANVAS : "+Str(GadgetWidth(\canvas_id))
     If redraw
+      ResizeImage(\maskImage,GadgetWidth(\canvas_id),GadgetHeight(\container_id))
       TREE_build(*this)
     Else
       _TREE_drawMask(*this)
@@ -348,7 +353,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 52
-; FirstLine = 32
-; Folding = --8DE98T-
+; CursorPosition = 75
+; FirstLine = 3
+; Folding = t-zDE98T-
 ; EnableXP

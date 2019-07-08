@@ -439,6 +439,6 @@ DataSection
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
 ; CursorPosition = 214
-; FirstLine = 147
+; FirstLine = 127
 ; Folding = AAg--l-ff951-
 ; EnableXP

@@ -49,7 +49,6 @@ Procedure evEditBank(item.TREE::Item)
 EndProcedure
 Procedure evDeleteBank(item.TREE::Item)
   With item
-;     CallDebugger
     If ChangeCurrentElement(myBank(),item\getData())
       If myTree\removeItem(item)
         myTree\build()
@@ -90,6 +89,8 @@ iBank = myTree\addChild(TREE::newItem("Bank",#IMG_BANK))
 Define bt.TREE::Button = iBank\addButton(TREE::newButton(#IMG_ADD,@evAddBank()))
 bt\setToolTip("Add a new bank")
 iExpens = myTree\addChild(TREE::newItem("Expens",#IMG_EXPENS))
+myTree\setColors($FF525252,$FFFFFFFF,$FF949494)
+myTree\setSelectedColors($FF919191,$FFFFFFFF)
 ; load data
 Restore bank
 Repeat
@@ -153,7 +154,7 @@ DataSection
   IncludeBinary "IMG/car.ico"
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 51
-; FirstLine = 39
+; CursorPosition = 91
+; FirstLine = 72
 ; Folding = ---
 ; EnableXP
