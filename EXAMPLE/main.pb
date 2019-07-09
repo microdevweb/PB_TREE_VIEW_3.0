@@ -16,6 +16,7 @@ Enumeration
   #CONTAINER_TREE 
   #CONTAINER_WORK 
   #SLITER
+  #CANVAS_WORK
 EndEnumeration
 Enumeration 1
   #IMG_BANK
@@ -71,6 +72,17 @@ Procedure fillItemCar(item.TREE::Item)
   Until d = "-1"
 EndProcedure
 
+Procedure _eventDrop()
+  Protected item.TREE::Item = Val(EventDropText())
+  Protected x = WindowMouseX(#MAIN_FORM) - GadgetX(#CONTAINER_WORK)
+  Protected y = WindowMouseY(#MAIN_FORM) - GadgetY(#CONTAINER_WORK)
+  StartDrawing(CanvasOutput(#CANVAS_WORK))
+  DrawText(x,y,item\getTitle())
+  StopDrawing()
+EndProcedure
+
+
+
 Procedure ev_size()
   ResizeGadget(#CONTAINER_TREE,#PB_Ignore,#PB_Ignore,#PB_Ignore,WindowHeight(#MAIN_FORM))
 EndProcedure
@@ -79,9 +91,15 @@ OpenWindow(#MAIN_FORM,0,0,800,600,"Teste",#PB_Window_ScreenCentered|#PB_Window_S
 ContainerGadget(#CONTAINER_TREE,0,0,800,600,#PB_Container_Double)
 CloseGadgetList()
 ContainerGadget(#CONTAINER_WORK,0,0,800,600,#PB_Container_Double)
+CanvasGadget(#CANVAS_WORK,0,0,0,0)
 CloseGadgetList()
 SplitterGadget(#SLITER,0,0,800,600,#CONTAINER_TREE,#CONTAINER_WORK,#PB_Splitter_Vertical|#PB_Splitter_Separator)
+ResizeGadget(#CANVAS_WORK,#PB_Ignore,#PB_Ignore,GadgetWidth(#CONTAINER_WORK),GadgetHeight(#CONTAINER_WORK))
 BindEvent(#PB_Event_SizeWindow,@ev_size(),#MAIN_FORM)
+; activate enable drop of container work
+EnableGadgetDrop(#CONTAINER_WORK,#PB_Drop_Text,#PB_Drag_Copy)
+BindEvent(#PB_Event_GadgetDrop,@_eventDrop(),#MAIN_FORM,#CONTAINER_WORK)
+
 ; create tree view
 
 Global.TREE::Item iBank,iExpens
@@ -101,6 +119,7 @@ Repeat
     myBank()\name = d
     myBank()\item = iBank\addChild(TREE::newItem(d))
     myBank()\item\setData(@myBank())
+    myBank()\item\enableDragEvent(#CONTAINER_WORK)
     Define bt.TREE::Button = myBank()\item\addButton(TREE::newButton(#IMG_EDIT,@evEditBank()))
     bt\setToolTip("Edit bank")
     Define bt.TREE::Button = myBank()\item\addButton(TREE::newButton(#IMG_DELETE,@evDeleteBank()))
@@ -154,7 +173,7 @@ DataSection
   IncludeBinary "IMG/car.ico"
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 91
-; FirstLine = 72
+; CursorPosition = 79
+; FirstLine = 68
 ; Folding = ---
 ; EnableXP

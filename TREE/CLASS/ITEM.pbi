@@ -183,9 +183,15 @@ EndProcedure
 Procedure _ITEM_event(*this._ITEM,*tree._TREE,mx,my)
   With *this
     Protected hoverButton.b = #False
+    Static clickOn.b,oldX
     Select EventType()
       Case #PB_EventType_MouseMove
         SetGadgetAttribute(*tree\canvas_id,#PB_Canvas_Cursor,#PB_Cursor_Default)
+        If clickOn
+          If \dropTarget <> -1
+            DragText(Str(*this),#PB_Drag_Copy)
+          EndIf
+        EndIf
         If _ITEM_hoverExpand(*this,mx,my)
           SetGadgetAttribute(*tree\canvas_id,#PB_Canvas_Cursor,#PB_Cursor_Hand)
         EndIf
@@ -246,6 +252,13 @@ Procedure _ITEM_event(*this._ITEM,*tree._TREE,mx,my)
         ForEach \myButtons()
           If \myButtons()\namageEvent(\myButtons(),*tree,mx,my) : Break : EndIf
         Next
+      Case #PB_EventType_LeftButtonDown
+        If Not clickOn
+          oldX = mx
+          clickOn = #True
+        EndIf
+      Case #PB_EventType_LeftButtonUp
+        clickOn = #False
     EndSelect
     ProcedureReturn #False ; the tree isn't need to refresh
   EndWith
@@ -331,6 +344,12 @@ Procedure ITEM_addButton(*this._ITEM,*button)
     ProcedureReturn *button
   EndWith
 EndProcedure
+
+Procedure ITEM_enableDragEvent(*this._ITEM,target)
+  With *this
+    \dropTarget = target
+  EndWith
+EndProcedure
 ;}
 
 ;-* GETTERS
@@ -409,6 +428,7 @@ Procedure newItem(title.s,image = 0)
     \unselectItems = @_ITEM_unselect()
     \selectable = #True
     \removeItem = @_ITEM_remove()
+    \dropTarget = -1
     ProcedureReturn *this
   EndWith
 EndProcedure
@@ -435,10 +455,11 @@ DataSection
   Data.i @ITEM_getData()
   Data.i @ITEM_setSelectedCallback()
   Data.i @ITEM_addButton()
+  Data.i @ITEM_enableDragEvent()
   E_ITEM:
 EndDataSection
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 214
-; FirstLine = 127
-; Folding = AAg--l-ff951-
+; CursorPosition = 190
+; FirstLine = 12
+; Folding = AAgAgHAADBEA5
 ; EnableXP

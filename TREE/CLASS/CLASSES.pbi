@@ -12,6 +12,7 @@ Prototype _p_selectCallback(*this)
 Prototype _p_build_button(*this,*item,*tree,x,y)
 Prototype _p_drawMask(*this)
 Prototype _p_remove(*this,*toRemove)
+Prototype _p_drag(*this)
 Structure _POS
   x.l
   y.l
@@ -54,6 +55,7 @@ Structure _ITEM
   selectCallback._p_selectCallback
   List *myButtons._BUTTON()
   removeItem._p_remove
+  dropTarget.l
 EndStructure
 Structure _TREE
   *methods
@@ -86,7 +88,7 @@ Structure _TREE
   unChecked.l
 EndStructure
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 64
-; FirstLine = 46
+; CursorPosition = 56
+; FirstLine = 38
 ; Folding = -
 ; EnableXP

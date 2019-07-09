@@ -39,6 +39,7 @@ DeclareModule TREE
     getData()
     setSelectedCallback(callback)
     addButton(button)
+    enableDragEvent(target)
   EndInterface
   Interface Tree
     ; GETTERS
@@ -96,7 +97,7 @@ Module TREE
   EndDataSection
 EndModule
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 59
-; FirstLine = 42
+; CursorPosition = 41
+; FirstLine = 21
 ; Folding = -
 ; EnableXP

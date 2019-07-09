@@ -41,9 +41,10 @@ Procedure _TREE_EVENT()
       Protected y = GetGadgetAttribute(\canvas_id,#PB_Canvas_MouseY)
       Protected x = GetGadgetAttribute(\canvas_id,#PB_Canvas_MouseX)
       Protected y1,y2
-      If EventType() = #PB_EventType_MouseEnter
-        SetActiveGadget(\canvas_id)
-      EndIf
+      Select EventType() 
+        Case  #PB_EventType_MouseEnter
+          SetActiveGadget(\canvas_id)
+      EndSelect
       ; look which item is hovered
       ForEach \_children()
         y1 = Val(StringField(MapKey(\_children()),1,"_"))
@@ -112,9 +113,10 @@ Procedure _TREE_drawMask(*this._TREE)
     Else
       SetGadgetAttribute(\scroll_id,#PB_ScrollArea_InnerHeight,GadgetHeight(\scroll_id) - 10)
     EndIf
-    StartDrawing(CanvasOutput(\canvas_id))
-    DrawImage(ImageID(\maskImage),0,0)
-    StopDrawing()
+;     StartDrawing(CanvasOutput(\canvas_id))
+;     DrawImage(ImageID(\maskImage),0,0)
+;     StopDrawing()
+    SetGadgetAttribute(\canvas_id,#PB_Canvas_Image,ImageID(\maskImage))
   EndWith
 EndProcedure
 ;}
@@ -236,6 +238,7 @@ Procedure TREE_build(*this._TREE)
         If Not \canvas_id
           \canvas_id = CanvasGadget(#PB_Any,0,0,GadgetWidth(\container_id),GadgetHeight(\container_id),#PB_Canvas_Keyboard)
           SetGadgetData(\canvas_id,*this)
+          EnableGadgetDrop(\canvas_id,#PB_Drop_Private,#PB_Drag_Link,1)
           BindGadgetEvent(\canvas_id,@_TREE_EVENT())
         EndIf
         CloseGadgetList()
@@ -353,7 +356,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 75
-; FirstLine = 3
-; Folding = t-zDE98T-
+; CursorPosition = 42
+; FirstLine = 8
+; Folding = 086BC+0p-
 ; EnableXP
