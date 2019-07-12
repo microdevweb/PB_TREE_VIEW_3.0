@@ -259,7 +259,11 @@ EndProcedure
 
 Procedure TREE_free(*this._TREE)
   With *this
-    
+    ForEach \myChildren()
+      Define i.TREE::Item = \myChildren()
+      i\free()
+    Next
+    FreeStructure(*this)
   EndWith
 EndProcedure
 
@@ -356,7 +360,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.71 beta 2 LTS (Windows - x64)
-; CursorPosition = 42
-; FirstLine = 8
-; Folding = 086BC+0p-
+; CursorPosition = 265
+; FirstLine = 63
+; Folding = t86BC+6r-
 ; EnableXP
